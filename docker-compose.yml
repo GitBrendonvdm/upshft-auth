@@ -1,0 +1,20 @@
+services:
+  auth-db:
+    image: postgres:17-alpine
+    container_name: upshft-auth-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-supertokens}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supertokens}
+      POSTGRES_DB: supertokens
+
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:latest
+    container_name: upshft-auth-core
+    restart: unless-stopped
+    ports:
+      - "3567:3567"
+    environment:
+      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER:-supertokens}:${POSTGRES_PASSWORD:-supertokens}@auth-db:5432/supertokens"
+      API_KEYS: ${SUPERTOKENS_API_KEY}
+      DISABLE_TELEMETRY: "true"
