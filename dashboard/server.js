@@ -17,4 +17,5 @@ st.init({
 
 app.use(st.middleware());
 app.use(st.errorHandler());
-app.listen(3000, () => console.log('Dashboard on 3000'));
+const port = parseInt(process.env.PORT) || 3568;
+app.listen(port, () => console.log(`Dashboard on ${port}`));
